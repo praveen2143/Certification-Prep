@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CertPath — Certification Learning System</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ===== TOPBAR ===== -->
+  <header class="topbar">
+    <div class="topbar-logo">
+      <span>⚡</span> Cert<span>Path</span>
+    </div>
+    <div class="topbar-sep"></div>
+    <div class="topbar-search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input
+        id="search-input"
+        type="text"
+        placeholder="Search cards..."
+        oninput="onSearch(this.value)"
+        autocomplete="off"
+      />
+    </div>
+    <button class="topbar-btn" onclick="openStudyMode(activeCertId)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polygon points="5 3 19 12 5 21 5 3"/>
+      </svg>
+      Study Mode
+    </button>
+  </header>
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <div class="sidebar-section-label">Certifications</div>
+    <div id="cert-nav"></div>
+
+    <div class="sidebar-section-label">Overall Progress</div>
+    <div class="sidebar-overall">
+      <div class="sidebar-overall-label">Cards mastered across all certs</div>
+      <div class="overall-progress-track">
+        <div class="overall-progress-fill" id="overall-fill" style="width:0%"></div>
+      </div>
+      <div class="overall-progress-nums">
+        <span><span id="overall-known">0</span> / <span id="overall-total">0</span></span>
+        <span id="overall-pct">0%</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section-label">How to use</div>
+    <div style="padding:0 16px;font-size:12px;color:var(--text-muted);line-height:1.8">
+      <div>1. Click a topic to expand cards</div>
+      <div>2. Click a card to reveal the answer</div>
+      <div>3. Mark <span style="color:var(--success)">Got it</span> or <span style="color:var(--warning)">Not yet</span></div>
+      <div>4. Use <b style="color:var(--text-secondary)">Study Mode</b> for focused review</div>
+      <div style="margin-top:10px">Add content by editing <code style="font-size:11px;color:var(--accent)">data.js</code></div>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main" id="main-content">
+    <div class="empty-state">
+      <div class="empty-state-icon">⏳</div>
+      <div class="empty-state-title">Loading...</div>
+    </div>
+  </main>
+
+</div>
+
+<!-- ===== STUDY MODE MODAL ===== -->
+<div class="study-modal-overlay" id="study-modal" onclick="if(event.target===this)closeStudyMode()">
+  <div class="study-modal">
+    <button class="study-close" onclick="closeStudyMode()" aria-label="Close study mode">✕</button>
+
+    <div class="study-progress">
+      <div class="study-progress-track">
+        <div class="study-progress-fill" id="study-progress-fill" style="width:0%"></div>
+      </div>
+      <div class="study-progress-label" id="study-progress-label">0 / 0</div>
+    </div>
+
+    <div class="study-meta" id="study-meta">Topic · difficulty</div>
+    <div class="study-q" id="study-q">Question text here</div>
+
+    <button class="study-flip-btn" id="study-flip-btn" onclick="flipStudyCard()">
+      Reveal answer &nbsp;·&nbsp; <kbd style="font-size:11px;opacity:0.6">Space</kbd>
+    </button>
+
+    <div class="study-answer" id="study-answer"></div>
+
+    <div class="study-controls" id="study-controls">
+      <button class="study-btn study-btn-know" onclick="studyMark(true)">✓ Got it</button>
+      <button class="study-btn study-btn-nope" onclick="studyMark(false)">✗ Not yet</button>
+      <button class="study-btn study-btn-skip" onclick="studySkip()">Skip</button>
+    </div>
+  </div>
+</div>
+
+<!-- data.js must load before app.js — it defines CERT_DATA used by app.js -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
